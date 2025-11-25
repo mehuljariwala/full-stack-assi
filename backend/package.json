@@ -1,0 +1,26 @@
+{
+  "name": "user-data-api",
+  "version": "1.0.0",
+  "description": "Express.js API with advanced caching, rate limiting, and async processing",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "echo \"Run with Postman or curl\""
+  },
+  "keywords": ["express", "typescript", "lru-cache", "rate-limiting"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}
