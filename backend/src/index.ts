@@ -14,6 +14,16 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Strip /api prefix when running on Vercel (Vercel passes full path including /api)
+if (process.env.VERCEL) {
+  app.use((req, _res, next) => {
+    if (req.path.startsWith("/api")) {
+      req.url = req.url.replace(/^\/api/, "") || "/";
+    }
+    next();
+  });
+}
+
 // Metrics middleware (records all requests)
 app.use(metricsMiddleware);
 
