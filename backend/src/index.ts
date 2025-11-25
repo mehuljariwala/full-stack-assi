@@ -76,9 +76,11 @@ app.use(
   }
 );
 
-// Start server
-const server = app.listen(PORT, () => {
-  console.log(`
+// Only start server if not in serverless environment (Vercel)
+if (process.env.VERCEL !== "1") {
+  // Start server
+  const server = app.listen(PORT, () => {
+    console.log(`
 ╔════════════════════════════════════════════════════════════╗
 ║                    User Data API v1.0.0                    ║
 ╠════════════════════════════════════════════════════════════╣
@@ -99,26 +101,27 @@ const server = app.listen(PORT, () => {
 ║    ✓ Request Deduplication                                 ║
 ║    ✓ Performance Monitoring                                ║
 ╚════════════════════════════════════════════════════════════╝
-  `);
-});
-
-// Graceful shutdown
-process.on("SIGTERM", () => {
-  console.log("\n[Shutdown] Received SIGTERM, shutting down gracefully...");
-  server.close(() => {
-    userCache.stopCleanup();
-    console.log("[Shutdown] Server closed.");
-    process.exit(0);
+    `);
   });
-});
 
-process.on("SIGINT", () => {
-  console.log("\n[Shutdown] Received SIGINT, shutting down gracefully...");
-  server.close(() => {
-    userCache.stopCleanup();
-    console.log("[Shutdown] Server closed.");
-    process.exit(0);
+  // Graceful shutdown
+  process.on("SIGTERM", () => {
+    console.log("\n[Shutdown] Received SIGTERM, shutting down gracefully...");
+    server.close(() => {
+      userCache.stopCleanup();
+      console.log("[Shutdown] Server closed.");
+      process.exit(0);
+    });
   });
-});
+
+  process.on("SIGINT", () => {
+    console.log("\n[Shutdown] Received SIGINT, shutting down gracefully...");
+    server.close(() => {
+      userCache.stopCleanup();
+      console.log("[Shutdown] Server closed.");
+      process.exit(0);
+    });
+  });
+}
 
 export { app };
